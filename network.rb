@@ -27,19 +27,19 @@ class Network
     puts "Balance for user is: #{block_chain.balance_for_address(user.wallet_address)}"
   end
 
+  def regulators
+    users.select { |user| user.regulator == true }
+  end
+
   def ask_for_consensus(user_mined)
-    users.each do |user|
+    regulators.each do |user|
       next if user == user_mined
 
-      agree = 0
       user.block_chain.chain.each_with_index do |block, index|
-        exit if agree > (users.count / 2)
-
         valid = block.equals_block(user_mined.block_chain.chain[index])
-        agree += 1 if valid
+        raise 'No Consensus' unless valid
       end
     end
-
 
     block_to_add = user_mined.block_chain.chain.last
     users.each do |user|

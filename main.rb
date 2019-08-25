@@ -45,6 +45,8 @@ users = []
   users.push(User.new(duped))
 end
 
+users.each_with_index { |user, index| user.regulator = true if index > 20 && index < 40 }
+
 @network = Network.new(users)
 
 while @keep_open

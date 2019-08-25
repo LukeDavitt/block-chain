@@ -2,12 +2,13 @@ require 'bitcoin'
 require_relative 'block_chain'
 
 class User
-  attr_accessor :block_chain, :key, :wallet_address, :network
+  attr_accessor :block_chain, :key, :wallet_address, :network, :regulator
 
-  def initialize(chain)
+  def initialize(chain, regulator = false)
     self.block_chain = chain
     self.key = Bitcoin::Key.generate
     self.wallet_address = key.pub
+    self.regulator = regulator
   end
 
   def add_transaction(amount, other_public_key)
